@@ -62,7 +62,7 @@ This is how it works:
 
 
 ### Exporting an Angular App as a Web Component
-Please note that dependency apps need to be on Angular 6.1.x, because for applications using @angular/elements (see step 1 below), you need Angular core v6.1.0+, as this is when support for ShadowDOM V1 spec was fulfilled. Angular's `ViewEncapsulation.Native` method was deprecated in lieu of `ShadowDom` (which uses the browser API's Shadow DOM, see more [here](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)).
+Please note that dependency apps need to be on Angular core 6.1.x, as this is when support for ShadowDOM V1 spec was fulfilled. Angular's `ViewEncapsulation.Native` method was deprecated in lieu of `ShadowDom` (which uses the browser API's Shadow DOM, see more [here](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)).
 
 **1. Set up the app to be "web component"-friendly.**
 To set up an Angular app to be exported and consumed as a web component, we recommend using [Angular Elements](https://angular.io/guide/elements).
