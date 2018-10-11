@@ -84,7 +84,7 @@ import '@webcomponents/custom-elements/custom-elements.min';
 
 - Create your Angular component: `$ ng g component cheese`
 
-- In your `app.module.ts` file:
+- In `app.module.ts`:
 
 ```
 import { BrowserModule } from '@angular/platform-browser';
@@ -113,7 +113,28 @@ export class AppModule {
 ```
 
 
-The rest of this section coming soon.
+- In `index.html`, you can pretty much replace all of the text with your selector: `<cheese></cheese>`
+
+- In `cheese.component.ts`:
+
+```
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+
+
+@Component({
+  selector: 'cheese',
+  moduleId: module.id,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './cheese.component.html'
+})
+
+export class CheeseComponent implements OnInit {
+  constructor() {}
+
+  ngOnInit() {}
+}
+```
+
 
 
 **2. Build the dependency app.**
