@@ -70,7 +70,7 @@ Please note that dependency apps need to be on Angular core 6.1.x, as this is wh
 To set up an Angular app to be exported and consumed as a web component, we recommend using [Angular Elements](https://angular.io/guide/elements).
 
 **2. Build the dependency app.**
-This depends on the setup you have for Angular, but we will assume you are using Angular's built-in CLI (as of v4.x).
+This depends on the setup you have for Angular, but we will assume you are using Angular's built-in CLI (as of v4.x). See step 3's npm script entry. In this case, the build command we are using is `ng build --prod --output-hashing=none`.
 
 **3. Concatenate the build files generated.**
 Install developer dependencies to concatenate the files.
@@ -100,14 +100,16 @@ const concat = require('concat');
 
 [Here](https://gist.github.com/kahboom/a608c783520cd92bf4ea8bcd5f1aa5cc) is a gist you can download.
 
-Make sure you include them in that order. Then it creates a new directory called `wc`, then you save the final output to a new file in that directory called `cheese.js`. Then we can add an npm script entry to run it from the command line.
+Make sure you include them in that order. Then it creates a new directory called `wc`, then you save the final output to a new file in that directory called `cheese.js`.
 
-In `package.json`:
+We can add an npm script entry in `package.json` to be able to run it from the command line. This takes care of both steps 2 and 3:
 ```json
 "scripts": {
-  "build:wc": "ng build --prod --output-hashing false && node build-script.js"
+  "build:wc": "ng build --prod --output-hashing=none && node build-script.js",
 }
 ```
+
+Feel free to separate them into two entries.
 
 **4. Import into the host app.**
 Go back to your host app, and include the final file like so:
