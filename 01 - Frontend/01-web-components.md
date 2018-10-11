@@ -75,7 +75,7 @@ Install developer dependencies to concatenate the files.
 
 `npm i concat fs-extra --save-dev`
 
-Grabs the 3 files Angular builds for production, and then concatenates them into a single file:
+For this step, it is advisable to create a JS file to do the concatenating for you. Here is an example we call `build-script.js`, where we reference three files generated as a result of the Angular build for production, and then concatenate them into a single file:
 
 ```javascript
 const fs = require('fs-extra');
@@ -83,16 +83,18 @@ const concat = require('concat');
 
 (async function build() {
   const files = [
-    './dist/inline.bundle.js',
+    './dist/runtime.bundle.js',
     './dist/polyfills.bundle.js',
     './dist/main.bundle.js'
   ]
 
   await fs.ensureDir('wc')
   await concat(files, 'wc/cheese.js')
-})()
+})();
 
 ```
+
+[Here](https://gist.github.com/kahboom/a608c783520cd92bf4ea8bcd5f1aa5cc) is a gist of it you can download.
 
 Make sure you include them in that order. Then it creates a new directory called `wc`, then you save the final output to a new file in that directory called `cheese.js`. Then we can add an npm script entry to run it from the command line.
 
