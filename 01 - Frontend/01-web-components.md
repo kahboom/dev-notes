@@ -63,11 +63,50 @@ This is how it works:
 4. **Import the resulting concatenated file into the host app**, and load it as a web component.
 
 
-### Exporting an Angular App as a Web Component
+### Exporting an Angular App as a Web Component (WIP)
 Please note that dependency apps need to be on Angular core 6.1.x, as this is when support for the ShadowDOM V1 spec was fulfilled. Angular's `ViewEncapsulation.Native` method was deprecated in lieu of `ShadowDom` (which uses the browser API's Shadow DOM, see more [here](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)).
 
 **1. Set up the app to be "web component"-friendly.**
 To set up an Angular app to be exported and consumed as a web component, we recommend using [Angular Elements](https://angular.io/guide/elements).
+
+- Create a new Angular app: `$ ng new cheeseApp`
+
+- Install Angular elements, which allows us to leverage web components with Angular: `$ npm i @angular/elements --save`
+
+- Install custom elements: `$ npm i @webcomponents/custom-elements --save`
+
+- In your `polyfills.ts` file, include the following:
+
+```typescript
+import '@webcomponents/custom-elements/src/native-shim';
+import '@webcomponents/custom-elements/custom-elements.min';
+```
+
+- Create your Angular component: `$ ng g component cheese`
+
+- In your `app.module.ts` file:
+
+```
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { CheeseComponent } from './cheese/cheese.component';
+
+@NgModule({
+  declarations: [
+    CheeseComponent
+  ],
+  imports: [
+    BrowserModule
+  ]
+})
+
+export class AppModule {
+}
+```
+
+
+The rest of this section coming soon.
+
 
 **2. Build the dependency app.**
 This depends on the setup you have for Angular, but we will assume you are using Angular's built-in CLI (as of v4.x). See step 3's npm script entry. In this case, the build command we are using is `ng build --prod --output-hashing=none`.
@@ -75,7 +114,7 @@ This depends on the setup you have for Angular, but we will assume you are using
 **3. Concatenate the build files generated.**
 Install developer dependencies to concatenate the files.
 
-`npm i concat fs-extra --save-dev`
+`$ npm i concat fs-extra --save-dev`
 
 Be sure that they get added as a `devDependency` in your `package.json` file, otherwise you'll get an error about it needing to be whitelisted.
 
@@ -120,9 +159,9 @@ Go back to your host app, and include the final file like so:
 ```
 
 
-If you would like to add the host app with Yarn, you can `yarn add <path to relative file>` instead.
+If you would like to add the host app with Yarn, you can `$ yarn add <path to relative file>` instead.
 
-### Exporting a React App as a Web Component
+### Exporting a React App as a Web Component (WIP)
 
 ## Resources
 Several code snippets on here can be attributed to Scott Davis's [Using Web Components](https://www.safaribooksonline.com/videos/using-web-components/9781491957264) video, available on Safari Books Online.
