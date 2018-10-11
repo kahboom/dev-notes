@@ -48,8 +48,36 @@ Example:
 
 ### NPM Dependencies
 
-## Using with Frontend Frameworks
+## Consuming Dependency Apps as Web Components
+If you have a **host app** that wants to consume an app as a **dependency app**, you may run into the issue that the dependency was built using a different framework from that of the host app. You can turn the dependency app into a framework-agnostic web component, which is essentially a file you would include in your host app.
 
+This is how it works:
+
+1. **Set up the app so that it is "web component"-friendly.** This is based on the framework with which the dependency app was built. See below for framework-specific solutions.
+2. **Build the dependency app.** This is also based on the framework, however, it is required that `runtime.js` and `polyfills.js` are generated, as they contain the proper polyfills and dependencies we need to make them truly self-contained web components. See below for framework-specific solutions.
+3. **Concatenate the build files generated into a single file.** We typically recommend creating a generic Node.js script for this, which can later be run using an npm script.
+4. **Import the resulting concatenated file into the host app**, and load it as a web component.
+
+
+### Exporting an Angular App as a Web Component
+
+**1. Set up the app to be "web component"-friendly.**
+To set up an Angular app to be exported and consumed as a web component, we recommend using [Angular Elements](https://angular.io/guide/elements).
+
+
+
+**2. Build the dependency app.**
+N/A
+
+**3. Concatenate the build files generated.**
+N/A
+
+**4. Import into the host app.**
+N/A
+
+For the second step, we recommend using [Angular Elements](https://angular.io/guide/elements).
+
+### Exporting a React App as a Web Component
 
 ## Other Resources
 
