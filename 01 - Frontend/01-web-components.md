@@ -115,26 +115,7 @@ export class AppModule {
 
 - In `index.html`, you can pretty much replace all of the text with your selector: `<cheese></cheese>`
 
-- In `cheese.component.ts`:
-
-```
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-
-
-@Component({
-  selector: 'cheese',
-  moduleId: module.id,
-  encapsulation: ViewEncapsulation.None,
-  templateUrl: './cheese.component.html'
-})
-
-export class CheeseComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
-```
-
+If you load the app in your browser, you should see "cheese works!".
 
 
 **2. Build the dependency app.**
