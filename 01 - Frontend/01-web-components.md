@@ -44,6 +44,8 @@ Example:
 
 ### Shadow DOM
 
+Rather than injecting styles, they should be loaded in the `<head>` inside Shadow DOM, so that they are truly encapsulated.
+
 [MDN: Using Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
 
 ## Loading Resources
@@ -62,7 +64,7 @@ This is how it works:
 
 
 ### Exporting an Angular App as a Web Component
-Please note that dependency apps need to be on Angular core 6.1.x, as this is when support for ShadowDOM V1 spec was fulfilled. Angular's `ViewEncapsulation.Native` method was deprecated in lieu of `ShadowDom` (which uses the browser API's Shadow DOM, see more [here](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)).
+Please note that dependency apps need to be on Angular core 6.1.x, as this is when support for the ShadowDOM V1 spec was fulfilled. Angular's `ViewEncapsulation.Native` method was deprecated in lieu of `ShadowDom` (which uses the browser API's Shadow DOM, see more [here](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)).
 
 **1. Set up the app to be "web component"-friendly.**
 To set up an Angular app to be exported and consumed as a web component, we recommend using [Angular Elements](https://angular.io/guide/elements).
@@ -70,11 +72,12 @@ To set up an Angular app to be exported and consumed as a web component, we reco
 **2. Build the dependency app.**
 This depends on the setup you have for Angular, but we will assume you are using Angular's built-in CLI (as of v4.x).
 
-
 **3. Concatenate the build files generated.**
 Install developer dependencies to concatenate the files.
 
 `npm i concat fs-extra --save-dev`
+
+Be sure that they get added as a `devDependency` in your `package.json` file, otherwise you'll get an error about it needing to be whitelisted.
 
 For this step, it is advisable to create a JS file to do the concatenating for you. Here is an example we call `build-script.js`, where we reference three files generated as a result of the Angular build for production, and then concatenate them into a single file:
 
@@ -114,6 +117,8 @@ Go back to your host app, and include the final file like so:
 <script src="../wc/cheese.js"></script>
 ```
 
+
+If you would like to add the host app with Yarn, you can `yarn add <path to relative file>` instead.
 
 ### Exporting a React App as a Web Component
 
