@@ -51,7 +51,7 @@ Example:
 ### NPM Dependencies
 
 ## Consuming Dependency Apps as Web Components
-If you have a **host app** that wants to consume an app as a **dependency app**, you may run into the issue that the dependency was built using a different framework from that of the host app. You can turn the dependency app into a framework-agnostic web component, which is essentially a file you would include in your host app.
+If you have a **host app** that needs to consume an app as a **dependency app**, you may run into the issue that the dependency was built using a different framework from that of the host app. You can turn the dependency app into a framework-agnostic web component, which is essentially a file you would include in your host app.
 
 This is how it works:
 
