@@ -61,25 +61,61 @@ This is how it works:
 
 ### Exporting an Angular App as a Web Component
 
+
 **1. Set up the app to be "web component"-friendly.**
 To set up an Angular app to be exported and consumed as a web component, we recommend using [Angular Elements](https://angular.io/guide/elements).
 
 
-
 **2. Build the dependency app.**
-N/A
+This depends on the setup you have for Angular, but we will assume you are using Angular's built-in CLI (as of v4.x).
+
 
 **3. Concatenate the build files generated.**
-N/A
+Install developer dependencies to concatenate the files.
+
+`npm i concat fs-extra --save-dev`
+
+Grabs the 3 files Angular builds for production, and then concatenates them into a single file:
+
+```javascript
+const fs = require('fs-extra');
+const concat = require('concat');
+
+(async function build() {
+  const files = [
+    './dist/inline.bundle.js',
+    './dist/polyfills.bundle.js',
+    './dist/main.bundle.js'
+  ]
+
+  await fs.ensureDir('wc')
+  await concat(files, 'wc/cheese.js')
+})()
+
+```
+
+Make sure you include them in that order. Then it creates a new directory called `wc`, then you save the final output to a new file in that directory called `cheese.js`. Then we can add an npm script entry to run it from the command line.
+
+In `package.json`:
+```json
+"scripts": {
+  "build:wc": "ng build --prod --output-hashing false && node build-script.js"
+}
+```
 
 **4. Import into the host app.**
-N/A
+Go back to your host app, and include the final file like so:
 
-For the second step, we recommend using [Angular Elements](https://angular.io/guide/elements).
+```html
+<cheese></cheese>
+<script src="../wc/cheese.js"></script>
+```
+
 
 ### Exporting a React App as a Web Component
 
-## Other Resources
+## Resources
+Several code snippets on here can be attributed to Scott Davis's [Using Web Components](https://www.safaribooksonline.com/videos/using-web-components/9781491957264) video, available on Safari Books Online.
 
 - [CanIUse](https://caniuse.com/)
 - [WebComponents.org](https://www.webcomponents.org)
