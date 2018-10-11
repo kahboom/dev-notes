@@ -57,7 +57,7 @@ If you have a **host app** that needs to consume an app as a **dependency app**,
 
 This is how it works:
 
-1. **Set up the app so that it is "web component"-friendly.** This is based on the framework with which the dependency app was built. See below for framework-specific solutions.
+1. **Set up the dependency app so that it is "web component"-friendly.** This is based on the framework with which the dependency app was built. See below for framework-specific solutions.
 2. **Build the dependency app.** This is also based on the framework, however, it is required that `runtime.js` and `polyfills.js` are generated, as they contain the proper polyfills and dependencies we need to make them truly self-contained web components. See below for framework-specific solutions.
 3. **Concatenate the build files generated into a single file.** We typically recommend creating a generic Node.js script for this, which can later be run using an npm script.
 4. **Import the resulting concatenated file into the host app**, and load it as a web component.
