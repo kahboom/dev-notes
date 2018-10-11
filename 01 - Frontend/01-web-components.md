@@ -44,6 +44,8 @@ Example:
 
 ### Shadow DOM
 
+[MDN: Using Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
+
 ## Loading Resources
 
 ### NPM Dependencies
@@ -60,11 +62,10 @@ This is how it works:
 
 
 ### Exporting an Angular App as a Web Component
-
+Please note that dependency apps need to be on Angular 6.1.x, because for applications using @angular/elements (see step 1 below), you need Angular core v6.1.0+, as this is when support for ShadowDOM V1 spec was fulfilled. Angular's `ViewEncapsulation.Native` method was deprecated in lieu of `ShadowDom` (which uses the browser API's Shadow DOM, see more [here](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)).
 
 **1. Set up the app to be "web component"-friendly.**
 To set up an Angular app to be exported and consumed as a web component, we recommend using [Angular Elements](https://angular.io/guide/elements).
-
 
 **2. Build the dependency app.**
 This depends on the setup you have for Angular, but we will assume you are using Angular's built-in CLI (as of v4.x).
@@ -94,7 +95,7 @@ const concat = require('concat');
 
 ```
 
-[Here](https://gist.github.com/kahboom/a608c783520cd92bf4ea8bcd5f1aa5cc) is a gist of it you can download.
+[Here](https://gist.github.com/kahboom/a608c783520cd92bf4ea8bcd5f1aa5cc) is a gist you can download.
 
 Make sure you include them in that order. Then it creates a new directory called `wc`, then you save the final output to a new file in that directory called `cheese.js`. Then we can add an npm script entry to run it from the command line.
 
