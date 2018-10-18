@@ -46,7 +46,9 @@ Example:
 
 Rather than injecting styles, they should be loaded in the `<head>` inside Shadow DOM, so that they are truly encapsulated.
 
-[MDN: Using Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
+- [MDN: Using Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
+
+- [What's New in Shadow DOM v1 (by examples)](https://hayato.io/2016/shadowdomv1/)
 
 ## Loading Resources
 
