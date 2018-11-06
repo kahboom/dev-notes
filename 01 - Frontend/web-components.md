@@ -19,6 +19,8 @@ Around since 2009 with HTML5, custom not possible until much later.
 
 ### Custom Elements
 
+Coming soon.
+
 ### HTML Imports
 
 Example:
@@ -42,6 +44,8 @@ Example:
 
 ### Templates
 
+Coming soon.
+
 ### Shadow DOM
 
 Shadow DOM solves the many problems that come with CSS-in-JS, BEM, and preprocessors. Rather than injecting styles, they should be loaded in the `<head>` inside Shadow DOM, so that they are truly encapsulated.
@@ -50,9 +54,6 @@ Shadow DOM solves the many problems that come with CSS-in-JS, BEM, and preproces
 
 - [What's New in Shadow DOM v1 (by examples)](https://hayato.io/2016/shadowdomv1/)
 
-## Loading Resources
-
-### NPM Dependencies
 
 ## Consuming Dependency Apps as Web Components
 If you have a **host app** that needs to consume an app as a **dependency app**, you may run into the issue that the dependency was built using a different framework from that of the host app. You can turn the dependency app into a framework-agnostic web component, which is essentially a file you would include in your host app.
@@ -165,17 +166,18 @@ We can add an npm script entry in `package.json` to be able to run it from the c
 Feel free to separate them into two entries.
 
 **4. Import into the host app.**
-Go back to your host app, and include the final file like so:
+Go back to your host app, and include the final file. There are a few ways to do this, with the most straightforward way being like so:
 
 ```html
 <cheese></cheese>
 <script src="../wc/cheese.js"></script>
 ```
 
-
-If you would like to add the host app with Yarn, you can `$ yarn add <path to relative file>` instead.
+It's likely in your best interest to consider using [yalc](https://www.npmjs.com/package/yalc), but you can also `$ yarn add <path to relative file>` instead.
 
 ### Exporting a React App as a Web Component (WIP)
+
+Coming soon.
 
 ## Resources
 Several code snippets on here can be attributed to Scott Davis's [Using Web Components](https://www.safaribooksonline.com/videos/using-web-components/9781491957264) video, available on Safari Books Online.
