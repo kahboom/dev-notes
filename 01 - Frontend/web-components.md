@@ -44,7 +44,7 @@ Example:
 
 ### Shadow DOM
 
-Rather than injecting styles, they should be loaded in the `<head>` inside Shadow DOM, so that they are truly encapsulated.
+Shadow DOM solves the many problems that come with CSS-in-JS, BEM, and preprocessors. Rather than injecting styles, they should be loaded in the `<head>` inside Shadow DOM, so that they are truly encapsulated.
 
 - [MDN: Using Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
 
