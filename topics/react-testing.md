@@ -113,7 +113,7 @@ The test function takes in two parameters:
 - The first parameter is a message telling us whether the test passed or not, which will be shown in the test output.
 - The second parameter is an arrow function that will contain our test
 
-- The `test.tsx` or `test.js` extension is important because Jest automatically looks for files with this extension when finding tests to execute. Note that if our tests don't contain any JSX, we could use a `test.ts` extension.
+The `test.tsx` or `test.js` extension is important because Jest automatically looks for files with this extension when finding tests to execute. Note that if our tests don't contain any JSX, we could use a `test.ts` extension.
 
 
 ### Tips for Writing Unit Tests
