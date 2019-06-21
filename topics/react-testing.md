@@ -180,8 +180,17 @@ test('should increment counter', () => {
 ### Code Coverage
 
 - Help identify areas that need more unit tests.
-- Code coverage tools: [Istanbul] comes built into Jest
 - Aiming for 100% code coverage is not only unrealistic, but also can encourage testing things that do not need to be tested and can be quite costly. This is only more possible on very small projects.
+- Code coverage tools: [Istanbul] comes built into Jest.
+  - To use Instanbul from Jest, you just need to add the `--coverage` flag to the Jest command in the npm script, or you can create a configuration section for Jest in the `package.json` file, and set the `collectCoverage` option to `true` like this: `{ "jest": { "collectCoverage": true } }`.
+
+After configuration, you can run `npm test` and see a different output in the console.
+
+- The first column shows how many statements are covered.
+- The second column shows the different branches of conditional statements.
+- The third measures the functions that have been tested, and the fourth column shows the lines of code covered by tests.
+- The last column would tell you which lines are uncovered.
+
 
 
 ### Enzyme & Shallow Rendering
