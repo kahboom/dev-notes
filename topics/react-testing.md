@@ -42,7 +42,7 @@ _* where the level of importance is directly proportional to the confidence you 
   - Built on top of [DOM Testing Library](https://testing-library.com/docs/dom-testing-library/intro).
 - [ReactTestUtils](https://reactjs.org/docs/test-utils.html)
   - Convenience utilities provided OOTB by React, to be used in combination with your testing framework.
-- The React team recommends using react-testing-library. Assume in all unit test examples we are using Jest, ReactTestUtils, and react-testing-library for unit tests.
+- The React team recommends using react-testing-library. Assume in all unit test examples we are using [Jest], ReactTestUtils, and [react-testing-library].
 
 ### Jest & react-testing-library
 
