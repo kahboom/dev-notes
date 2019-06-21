@@ -19,24 +19,29 @@ _* where the level of importance is directly proportional to the confidence you 
 
 ---
 
-## Unit testing
+## React Unit Testing
 
 - Fast, small, and reliable. Easy to debug.
 - [Pure functions](https://reactjs.org/docs/components-and-props.html#props-are-read-only) are the easiest to test, because there are no side effects.
 
-### Unit testing tools
+### Unit Testing Tools
 
-- [Enzyme](https://airbnb.io/enzyme/)
-- [Jest](https://jestjs.io/)
-  - Comes with create-react-app; built by Facebook.
+- [Enzyme]
+  - Testing framework created by Airbnb.
+  - Focuses more on props and checking state.
+  - Returns React components in memory or to the DOM while providing a jQuery-like API for traversing the React component tree.
+- [Jest]- Testing framework created by Facebook. Comes with create-react-app, though if you want to create snapshot tests, you'd need to run `yarn add --dev react-test-renderer`.
 - [Karma](https://karma-runner.github.io/latest/index.html) and [Mocha](https://mochajs.org/) are often used in tandem, where Mocha is a testing framework and Karma is a test runner.
-- [react-testing-library](https://github.com/testing-library/react-testing-library)
-  - Does not replace Jest, works with it (or Mocha).
+- [react-testing-library]
+  - Does not replace Jest, works with it (or Mocha). It is a library, not a framework or test runner.
   - Replaces something like Enzyme.
-
-- The React team recommends using react-testing-library. Facebook uses Jest to test.
-
-Assume in all unit test examples we are using Jest and react-testing-library.
+  - Returns HTML elements.
+  - Queries functions by text content (visible on page) or HTML data attributes (for when fetching by text is not possible or practical).
+  - Focuses more on the DOM and what gets rendered, interacts with them.
+  - Built on top of [DOM Testing Library](https://testing-library.com/docs/dom-testing-library/intro).
+- [ReactTestUtils](https://reactjs.org/docs/test-utils.html)
+  - Convenience utilities provided OOTB by React, to be used in combination with your testing framework.
+- The React team recommends using react-testing-library. Assume in all unit test examples we are using Jest, ReactTestUtils, and react-testing-library for unit tests.
 
 ### Jest & react-testing-library
 
@@ -122,7 +127,7 @@ The test function takes in two parameters:
 - Do not test implementation details. It can give a false sense of security, and will slow down refactoring. Tests will need to be updated after refactoring and can quickly become obsolete. You should very rarely have to change tests when you refactor code.
 
 
-### Testing React hooks
+### Testing React Hooks
 
 - Tools for testing hooks: [react-hooks-testing-library](https://github.com/testing-library/react-hooks-testing-library)
 - Creates a test harness for hooks that handles running them within the body of a function component.
@@ -166,20 +171,20 @@ test('should increment counter', () => {
 })
 ```
 
-### Mocking dependencies
+### Mocking Dependencies
 
 - If we mock too much, we aren't really testing our app.
 - Good use case of mocking with unit tests: REST APIs
 - Whether or not to mock third party dependencies, you have to ask yourself if you would want to know whether your app is broken regardless of the reason being due to the third party app or not. In most cases, people will want to know. This is a good argument to _not_ mock these dependencies, because it will more closely resemble the app itself.
 
-### Code coverage
+### Code Coverage
 
 - Help identify areas that need more unit tests.
-- Code coverage tools: [Istanbul](https://istanbul.js.org/) comes built into Jest
+- Code coverage tools: [Istanbul] comes built into Jest
 - Aiming for 100% code coverage is not only unrealistic, but also can encourage testing things that do not need to be tested and can be quite costly. This is only more possible on very small projects.
 
 
-### Enzyme & shallow rendering
+### Enzyme & Shallow Rendering
 
 - Enzyme introduces a concept of **shallow rendering**, which is [controversial](https://kentcdodds.com/blog/why-i-never-use-shallow-rendering) at the moment.
 - The controversy is that shallow rendering provides convenience that sacrifices test reliability. With shallow rendering, it is possible to refactor a component's implementation and and tests would still pass.
@@ -187,28 +192,154 @@ test('should increment counter', () => {
 - It renders your component one level deep, making it faster than full DOM rendering.
 - This means it doesn't run lifecycle methods (since only the React elements are available), it doesn't allow you to actually interact with DOM elements (because nothing's actually rendered), and it doesn't actually attempt to get the React elements that are returned by your custom components.
 
+---
 
-## Integration testing
+## React Integration Testing
 
 - Having some unit tests to verify that pieces work in isolation is important, but is useless if you don't also verify that they work together.
 - Integration tests strike a great balance on the trade-offs between confidence and speed/expense. This is why it's advisable to spend most of the effort there.
-- 
+- Tools for integration testing: [Enzyme] and [react-testing-library]
 
-## E2E testing
+### Requirements:
+
+1. interactions between React components, typically performed via calling prop functions such as `<Component onClick={onClickHandler}>`
+2. manipulation of component state
+3. direct manipulation of the DOM in React lifecycle methods
+
+- In order to test these kinds of interactions we need a way to not only render a whole component tree, but a means to render the component within a functioning DOM.
+
+To Do App:
+
+```
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      todos: [
+        { text: 'Walk the Dog', priority: 'High' },
+        { text: 'Ride bike', priority: 'Low' },
+        { text: 'Get a haircut', priority: 'Med' }
+      ]
+    };
+  }
+
+  addTodo = todo => {
+    const todos = this.state.todos;
+    // simulate an AJAX request
+    setTimeout(() => {
+      this.setState({ todos: todos.concat(todo) });
+    }, 0);
+  };
+
+  deleteTodo = value => {
+    const todos = this.state.todos;
+    const index = todos.indexOf(value);
+    if (index > -1) {
+      this.setState({ todos: todos.filter((item, i) => i !== index) });
+    }
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h1 className="App-title">React Todos</h1>
+        </header>
+        <div className="App-body">
+          <TodoForm addTodo={this.addTodo} />
+          <TodoList todos={this.state.todos} deleteTodo={this.deleteTodo} />
+        </div>
+      </div>
+    );
+  }
+}
+```
+
+To Do Item:
+
+```
+class TodoItem extends Component {
+  render() {
+    const { deleteTodo, todo } = this.props;
+
+    return (
+      <div className="TodoItem" data-testid="TodoItem">
+        <div data-testid="TodoItem-priority" className={`TodoItem-priority TodoItem--${todo.priority.toLowerCase()}`} />
+        <div data-testid="TodoItem-text" className={`TodoItem-text`}>
+          {todo.text}
+        </div>
+        <button onClick={() => deleteTodo(todo)} className="TodoItem-delete">
+          -
+        </button>
+      </div>
+    );
+  }
+}
+```
+
+To Do List:
+
+```
+// ToDoList.js
+
+class TodoList extends Component {
+  render() {
+    const { todos, deleteTodo } = this.props;
+    return todos.map((todo, i) => <TodoItem deleteTodo={deleteTodo} key={i} todo={todo} />);
+  }
+}
+```
+
+
+The integration test should describe the following:
+> Entering a TODO in the TODO form and clicking “Add” should add the TODO to the end of the list of TODOs.
+
+```
+// app.rtl.test.js
+
+test('entering a todo in form adds a todo', async () => {
+  const { getByText, getByPlaceholderText, getByTestId, container } = render(<App />);
+
+  // enter todo text in textbox
+  getByPlaceholderText('Enter todo text').value = 'My new todo';
+
+  // click Add
+  Simulate.click(getByText('Add'));
+
+  // wait for Todo to show up
+  await wait(() => getByText('My new todo'));
+
+  // make sure form is cleared
+  expect(getByTestId('TodoForm-input').value).toEqual('');
+
+  // make sure todo was added
+  expect(getByText('My new todo')).toBeDefined();
+});
+```
+
+Examples borrowed from [Integration Testing in React](https://medium.com/homeaway-tech-blog/integration-testing-in-react-21f92a55a894).
+
+
+---
+
+## React E2E Testing
 
 - Simulate real user scenarios.
 - Slower and more expensive than unit tests, but provide more value and confidence that your app is working as expected.
 - E2E testing tools:
-  - [Cypress](https://www.cypress.io/) - Runs without Selenium
+  - [Cypress] - Runs without Selenium
   - [Selenium](https://www.seleniumhq.org/) & [Selenium WebDriver](https://www.seleniumhq.org/projects/webdriver/)
 - The key is writing less E2E tests, but well-written ones.
 
 
+---
 
-## Snapshot testing
+## React Snapshot Testing
 
 > A typical snapshot test case for a mobile app renders a UI component, takes a snapshot, then compares it to a reference snapshot file stored alongside the test. The test will fail if the two snapshots do not match: either the change is unexpected, or the reference snapshot needs to be updated to the new version of the UI component.
 
+- Used in lieu of rendering the graphical UI, which would require building the entire app.
 - Can be used to implement tests quicker.
 - Can be used for pure functions and components.
 - The snapshot file gets committed along with code changes.
@@ -217,8 +348,11 @@ test('should increment counter', () => {
 - False negatives quickly erode the team's trust in a test to actually find bugs and instead come to be seen as a chore on a checklist they need to satisfy before they can move on to the next thing.
 - Good for: Error messages and logs, styling (even E2E tests can miss this)
 - Avoid huge snapshots.
+- Treat snapshots as code.
 - Always see if you can actually change it from a snapshot to a more explicit assertion (because you probably can).
-- Tools: [Jest Snapshot Testing](https://facebook.github.io/jest/docs/en/snapshot-testing.html)
+- Snapshot testing tools:
+  - [Jest Snapshot Testing](https://facebook.github.io/jest/docs/en/snapshot-testing.html)
+  - [React Test Renderer](https://reactjs.org/docs/test-renderer.html) - Converts React components to pure JS objects to be used for a snapshot, without the use of a browser or jsdom.
 
 Example of a component that renders hyperlinks:
 
@@ -297,10 +431,13 @@ test('Link changes the class when hovered', () => {
 
 When it is run with `yarn test` or `jest`, a file gets created. In this case, it'd be named something like `__tests__/__snapshots__/Link.react.test.js.snap`.
 
+For more information on snapshot testing with Jest, go [here](https://jestjs.io/docs/en/snapshot-testing).
+
 ## References
 
 - [Effective React Testing @ JazzCon 2018](https://www.youtube.com/watch?v=Eakp29J38YA) by Jeremy Fairbank
 - [Effective Snapshot Testing](https://kentcdodds.com/blog/effective-snapshot-testing) by Kent C. Dodds
+- [Integration Testing in React](https://medium.com/homeaway-tech-blog/integration-testing-in-react-21f92a55a894) by Jeffrey Russom
 - [Jest Testing React Apps](https://jestjs.io/docs/en/tutorial-react)
 - [No To More E2E Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html) by Mike Wacker, Google Testing Blog
 - [Painless JavaScript Testing with Jest](https://learning.oreilly.com/videos/advanced-design-patterns/9781788838931/9781788838931-video4_2?autoplay=false) by Michele Bertoli, Advanced Design Patterns with React
@@ -310,3 +447,9 @@ When it is run with `yarn test` or `jest`, a file gets created. In this case, it
 - [What is React Testing Library?](https://www.youtube.com/watch?v=JKOwJUM4_RM&feature=youtu.be) by Scott Tolinski
 - [Why I Never Use Shallow Rendering](https://kentcdodds.com/blog/why-i-never-use-shallow-rendering) by Kent C. Dodds
 - [Write tests. Not too many. Mostly integration.](https://kentcdodds.com/blog/write-tests) by Kent C. Dodds
+
+[Cypress]: https://www.cypress.io/
+[Enzyme]: https://airbnb.io/enzyme/
+[Istanbul]: https://istanbul.js.org/
+[Jest]: https://jestjs.io/
+[react-testing-library]: https://github.com/testing-library/react-testing-library
