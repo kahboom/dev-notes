@@ -3,7 +3,7 @@
 - From easiest to most difficult to write: snapshot, unit, integration, E2E
 - From least to most important*: snapshot, unit, integration, E2E 
 
-_* where the level of importance is directly proportional to the confidence you have that your tests are reflective of your app working as intended_
+_* where the level of importance is directly proportional to the confidence you have that your tests are reflective of your app working as intended; please see pyramid below_
 
 
 ## Testing Pyramid
@@ -13,6 +13,7 @@ _* where the level of importance is directly proportional to the confidence you 
 - Google suggests a 70/20/10 split: 70% unit tests, 20% integration tests, and 10% end-to-end tests. The exact mix will be different for each team, but in general, it should retain that pyramid shape. Try to avoid these anti-patterns:
   - **Inverted pyramid/ice cream cone**. Mostly end-to-end tests, few integration tests, and even less unit tests. 
   - **Hourglass**. A lot of unit tests, then many end-to-end tests where integration tests should be used. The hourglass has many unit tests at the bottom and many end-to-end tests at the top, but few integration tests in the middle. 
+- E2E tests are useful, but should be the least number of tests of its kind that you write.
 
 ![Google Testing Pyramid](https://2.bp.blogspot.com/-YTzv_O4TnkA/VTgexlumP1I/AAAAAAAAAJ8/57-rnwyvP6g/s1600/image02.png)
 
@@ -30,7 +31,7 @@ _* where the level of importance is directly proportional to the confidence you 
   - Testing framework created by Airbnb.
   - Focuses more on props and checking state.
   - Returns React components in memory or to the DOM while providing a jQuery-like API for traversing the React component tree.
-- [Jest]- Testing framework created by Facebook. Comes with create-react-app, though if you want to create snapshot tests, you'd need to run `yarn add --dev react-test-renderer`.
+- [Jest] - Testing framework created by Facebook. create-react-app includes it OOTB, though if you want to create snapshot tests, you'd need to run `yarn add --dev react-test-renderer`.
 - [Karma](https://karma-runner.github.io/latest/index.html) and [Mocha](https://mochajs.org/) are often used in tandem, where Mocha is a testing framework and Karma is a test runner.
 - [react-testing-library]
   - Does not replace Jest, works with it (or Mocha). It is a library, not a framework or test runner.
@@ -125,6 +126,12 @@ The test function takes in two parameters:
 
 - If your test uses `instance()` or `state()`, know that you're testing things that the user couldn't possibly know about or even care about, which will take your tests further from giving you confidence that things will work when your user uses them.
 - Do not test implementation details. It can give a false sense of security, and will slow down refactoring. Tests will need to be updated after refactoring and can quickly become obsolete. You should very rarely have to change tests when you refactor code.
+
+
+- **Setup and Teardown**. If you have a lot of repetitive steps in your tests, you can use Jest's built-in [setup and teardown](https://jest-bot.github.io/jest/docs/setup-teardown.html) helper functions. For instance, `beforeEach` and `afterEach`. You can also use these, particularly `beforeEach` to log data in debugging a failing test.
+- **Test Only One Test**. If a test is failing, the first thing you should check is to see if it fails when it's the only one running. An easy way to do this is to temporarily change the `test` command to a `test.only`.
+- **One-Time Setup**. To only run a series of tasks once, use `beforeAll` or `afterAll`.
+- **Scoping**. The `before` and `after` blocks apply to every test in a file. You can also group tests together using a `describe` block. When they are inside a `describe` block, the `before` and `after` blocks only apply to the tests within that `describe` block.
 
 
 ### Testing React Hooks
@@ -330,6 +337,14 @@ test('entering a todo in form adds a todo', async () => {
 Examples borrowed from [Integration Testing in React](https://medium.com/homeaway-tech-blog/integration-testing-in-react-21f92a55a894).
 
 
+### Asynchronous Testing
+
+In order for Jest to test asynchronous JavaScript, it needs to know when the code it is testing has been completed, before it can move on to another test. How it does this depends on whether your code is using callbacks, promises, or `async`/`await`. For more details, see [here](https://jest-bot.github.io/jest/docs/asynchronous.html).
+
+### Testing Routes
+
+Coming soon.
+
 ---
 
 ## React E2E Testing
@@ -340,7 +355,31 @@ Examples borrowed from [Integration Testing in React](https://medium.com/homeawa
   - [Cypress] - Runs without Selenium
   - [Selenium](https://www.seleniumhq.org/) & [Selenium WebDriver](https://www.seleniumhq.org/projects/webdriver/)
 - The key is writing less E2E tests, but well-written ones.
+- Define a "happy path" for users, that would result in an ideal user experience across the app. Use this to guide your tests.
 
+
+### End to End Testing with Cypress
+
+- Runs in the browser.
+- This also means you can use browser dev tools to debug alongside.
+
+The command `node_modules/.bin/cypress open` will open the Cypress CLI (or dashboard) on your system and also create a `cypress.json` file and a `cypress` directory in your app’s root directory, which is where your E2E tests will live.
+
+You can also add the following script to your `package.json`:
+```
+"cypress": "cypress open"
+```
+
+You can also run Cypress tests without the UI or dashboard by adding this script as well, which will run tests strictly in the terminal:
+```
+"cypress:all": "cypress run"
+```
+
+- If you need to stub calls to the API (for instance, for form submission), you can use `cy.server()` and `cy.route()`.
+- Use [fixtures](https://docs.cypress.io/api/commands/fixture.html#Notes) to load data and seed the application state.
+- Create [custom commands](https://docs.cypress.io/api/cypress-api/custom-commands.html#Syntax) to avoid code duplication and to keep tests clean. A good use case is for things like logging in.
+
+For additional tutorials on Cypress, go [here](https://docs.cypress.io/examples/examples/tutorials.html) and use [this](https://github.com/cypress-io/cypress-tutorial-build-todo) as the example To Do app.
 
 ---
 
@@ -446,6 +485,7 @@ For more information on snapshot testing with Jest, go [here](https://jestjs.io/
 
 - [Effective React Testing @ JazzCon 2018](https://www.youtube.com/watch?v=Eakp29J38YA) by Jeremy Fairbank
 - [Effective Snapshot Testing](https://kentcdodds.com/blog/effective-snapshot-testing) by Kent C. Dodds
+- [End to End Testing React Apps with Cypress](https://blog.bitsrc.io/testing-react-apps-with-cypress-658bc482678)
 - [Integration Testing in React](https://medium.com/homeaway-tech-blog/integration-testing-in-react-21f92a55a894) by Jeffrey Russom
 - [Jest Testing React Apps](https://jestjs.io/docs/en/tutorial-react)
 - [No To More E2E Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html) by Mike Wacker, Google Testing Blog
