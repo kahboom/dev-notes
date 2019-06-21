@@ -1,10 +1,25 @@
 # React Testing
 
-- From easiest to most difficult to write: snapshot, unit, integration, E2E
-- From least to most important*: snapshot, unit, integration, E2E 
+- [Testing Pyramid](#testing-pyramid)
+- [Unit Testing](#unit-testing)
+  * [Unit Testing Tools](#unit-testing-tools)
+  * [Jest & react-testing-library](#jest---react-testing-library)
+  * [Tips for Writing Unit Tests](#tips-for-writing-unit-tests)
+  * [Testing React Hooks](#testing-react-hooks)
+  * [Mocking Dependencies](#mocking-dependencies)
+  * [Code Coverage](#code-coverage)
+  * [Enzyme & Shallow Rendering](#enzyme---shallow-rendering)
+- [Integration Testing](#integration-testing)
+  * [Requirements:](#requirements-)
+  * [Asynchronous Testing](#asynchronous-testing)
+  * [Testing Routes](#testing-routes)
+- [E2E Testing](#e2e-testing)
+  * [End to End Testing with Cypress](#end-to-end-testing-with-cypress)
+- [Snapshot Testing](#snapshot-testing)
+- [References](#references)
 
-_* where the level of importance is directly proportional to the confidence you have that your tests are reflective of your app working as intended; please see pyramid below_
 
+---
 
 ## Testing Pyramid
 
@@ -18,9 +33,15 @@ _* where the level of importance is directly proportional to the confidence you 
 ![Google Testing Pyramid](https://2.bp.blogspot.com/-YTzv_O4TnkA/VTgexlumP1I/AAAAAAAAAJ8/57-rnwyvP6g/s1600/image02.png)
 
 
+- From easiest to most difficult to write: snapshot, unit, integration, E2E
+- From least to most important*: snapshot, unit, integration, E2E 
+
+_* where the level of importance is directly proportional to the confidence you have that your tests are reflective of your app working as intended_
+
+
 ---
 
-## React Unit Testing
+## Unit Testing
 
 - Fast, small, and reliable. Easy to debug.
 - [Pure functions](https://reactjs.org/docs/components-and-props.html#props-are-read-only) are the easiest to test, because there are no side effects.
@@ -210,7 +231,7 @@ After configuration, you can run `npm test` and see a different output in the co
 
 ---
 
-## React Integration Testing
+## Integration Testing
 
 - Having some unit tests to verify that pieces work in isolation is important, but is useless if you don't also verify that they work together.
 - Integration tests strike a great balance on the trade-offs between confidence and speed/expense. This is why it's advisable to spend most of the effort there.
@@ -347,7 +368,7 @@ Coming soon.
 
 ---
 
-## React E2E Testing
+## E2E Testing
 
 - Simulate real user scenarios.
 - Slower and more expensive than unit tests, but provide more value and confidence that your app is working as expected.
@@ -383,7 +404,7 @@ For additional tutorials on Cypress, go [here](https://docs.cypress.io/examples/
 
 ---
 
-## React Snapshot Testing
+## Snapshot Testing
 
 > A typical snapshot test case for a mobile app renders a UI component, takes a snapshot, then compares it to a reference snapshot file stored alongside the test. The test will fail if the two snapshots do not match: either the change is unexpected, or the reference snapshot needs to be updated to the new version of the UI component.
 
