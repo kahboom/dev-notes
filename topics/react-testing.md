@@ -56,12 +56,12 @@ _* where the level of importance is directly proportional to the confidence you 
 - [Karma](https://karma-runner.github.io/latest/index.html) and [Mocha](https://mochajs.org/) are often used in tandem, where Mocha is a testing framework and Karma is a test runner.
 - [react-testing-library]
   - Does not replace Jest, works with it (or Mocha). It is a library, not a framework or test runner.
-  - Replaces something like Enzyme.
+  - Replaces Enzyme.
   - Returns HTML elements.
   - Queries functions by text content (visible on page) or HTML data attributes (for when fetching by text is not possible or practical).
   - Focuses more on the DOM and what gets rendered, interacts with them.
   - Built on top of [DOM Testing Library](https://testing-library.com/docs/dom-testing-library/intro).
-- [ReactTestUtils](https://reactjs.org/docs/test-utils.html)
+- [ReactTestUtils](https://reactjs.org/docs/test-utils.html). It is encouraged, to be used alongside [jest-dom](https://github.com/gnapse/jest-dom). jest-dom is a companion library for react-testing-library that provides custom DOM element matchers for Jest such as `toHaveTextContent` or `toBeVisible`.
   - Convenience utilities provided OOTB by React, to be used in combination with your testing framework.
 - The React team recommends using react-testing-library. Assume in all unit test examples we are using [Jest], ReactTestUtils, and [react-testing-library].
 
